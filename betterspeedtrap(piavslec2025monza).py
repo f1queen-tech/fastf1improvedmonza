@@ -14,7 +14,7 @@ fig, (ax1, ax2) = plt.subplots(
     2, 1, figsize=(12, 8), sharex=True,
     gridspec_kw={'height_ratios': [3, 1]}
 )
-ax1.plot(pia_tel['Distance'], pia_tel['Speed'], color="#00FFE1", label='PIA')
+ax1.plot(pia_tel['Distance'], pia_tel['Speed'], color="#F3A72F", label='PIA')
 ax1.plot(lec_tel['Distance'], lec_tel['Speed'], color='#E8002D', label='LEC')
 ax1.set_ylabel('Speed (km/h)')
 ax1.set_title('PIA vs LEC — Fastest Lap Speed Trace + Delta — 2025 Italian GP')
