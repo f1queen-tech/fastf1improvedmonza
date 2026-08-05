@@ -1,0 +1,35 @@
+name: build-release
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset: speedtrap-linux-x86_64
+          - os: windows-latest
+            asset: speedtrap-windows-x86_64.exe
+          - os: macos-latest
+            asset: speedtrap-macos-arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyinstaller fastf1 matplotlib
+      - run: pyinstaller --onefile --name speedtrap --collect-all fastf1 --collect-data matplotlib speedtrap.py
+      - name: rename binary
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            mv dist/speedtrap.exe "dist/${{ matrix.asset }}"
+          else
+            mv dist/speedtrap "dist/${{ matrix.asset }}"
+          fi
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/${{ matrix.asset }}
